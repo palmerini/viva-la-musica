@@ -7,7 +7,7 @@
 	let box: HTMLDivElement;
 	let osmd: OpenSheetMusicDisplay | undefined;
 	let status = $state<'loading' | 'ready' | 'error'>('loading');
-	/** Posizione (in semibrevi) di ogni passo del cursore, nell'ordine dello spartito. */
+	/** Posizione (in semibrevi) di ogni passo del cursore. Segue i ritornelli, come il MIDI esportato da MuseScore. */
 	let stamps: number[] = [];
 	let at = 0;
 	let destroyed = false;
@@ -34,7 +34,7 @@
 			stamps = [];
 			const it = osmd.cursor.Iterator;
 			while (!it.EndReached) {
-				stamps.push(it.CurrentSourceTimestamp.RealValue);
+				stamps.push(it.CurrentEnrolledTimestamp.RealValue);
 				osmd.cursor.next();
 			}
 			osmd.cursor.reset();
@@ -76,7 +76,9 @@
 		const b = box.getBoundingClientRect();
 		const c = el.getBoundingClientRect();
 		if (c.top < b.top + 20 || c.bottom > b.bottom - 20) {
-			box.scrollTo({ top: box.scrollTop + (c.top - b.top) - 40, behavior: 'smooth' });
+			// Scorrimento morbido per l'avanzamento normale, immediato per i salti (seek).
+			const far = c.top < b.top - b.height || c.top > b.bottom + b.height;
+			box.scrollTo({ top: box.scrollTop + (c.top - b.top) - 40, behavior: far ? 'instant' : 'smooth' });
 		}
 	}
 </script>
