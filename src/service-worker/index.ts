@@ -3,8 +3,8 @@ import { version } from '$app/env';
 import { immutable, assets } from '$app/manifest';
 
 const CACHE = `app-${version}`;
-// I campioni audio (~2 MB) non si precaricano: restano nella cache dopo il primo ascolto.
-const SHELL: string[] = [...immutable, ...assets].map((a) => a.path).filter((p) => !p.startsWith('/soundfonts/'));
+// Campioni audio (~2 MB) e documentazione (~9 MB) non si precaricano: restano nella cache dopo il primo uso.
+const SHELL: string[] = [...immutable, ...assets].map((a) => a.path).filter((p) => !p.startsWith('/soundfonts/') && !p.startsWith('/docs/'));
 
 sw.addEventListener('install', (e: ExtendableEvent) => {
 	e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => sw.skipWaiting()));

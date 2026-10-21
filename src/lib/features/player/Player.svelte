@@ -14,6 +14,17 @@
 	let playing = $state(false);
 	let progress = $state(0);
 	let ticks = $state(0);
+	// Mostra/nascondi lo spartito; la scelta resta sul dispositivo.
+	let showScore = $state(true);
+	try {
+		showScore = localStorage.getItem('showScore') !== '0';
+	} catch {}
+	function toggleScore() {
+		showScore = !showScore;
+		try {
+			localStorage.setItem('showScore', showScore ? '1' : '0');
+		} catch {}
+	}
 	let rate = $state(1);
 	let volumes = $state(score.parts.map(() => 1));
 	let focus = $state<Voice | 'all'>('all');
@@ -61,13 +72,16 @@
 		{playing ? '⏸ Pausa' : voicesReady ? '▶ Play' : '▶ Play (carico le voci…)'}
 	</button>
 	<button onclick={() => player.stop()}>⏹ Stop</button>
+	{#if song.hasScore}
+		<button class:on={showScore} aria-pressed={showScore} onclick={toggleScore}>🎼 Spartito</button>
+	{/if}
 </div>
 <input
 	type="range" min="0" max="1" step="0.001" value={progress} aria-label="Posizione"
 	oninput={(e) => player.seek(+e.currentTarget.value)}
 />
 
-{#if song.hasScore}
+{#if song.hasScore && showScore}
 	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} voice={focus} />
 {/if}
 

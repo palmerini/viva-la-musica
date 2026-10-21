@@ -8,6 +8,7 @@
 
 <svelte:head><title>Viva la musica</title></svelte:head>
 
+<img class="logo" src="/icon-512.png" alt="Coro Viva La Musica, Milano" width="160" height="160" />
 <h1>Repertorio</h1>
 <input type="search" placeholder="Cerca un brano…" bind:value={q} />
 <ul>
@@ -19,6 +20,7 @@
 </ul>
 
 <style>
+	.logo { display: block; margin: 0.5rem auto 0; width: 9rem; height: auto; border-radius: 1rem; }
 	h1 { margin: 0.5rem 0 1rem; font-size: 1.4rem; }
 	input { width: 100%; padding: 0.75rem; font: inherit; border: 1px solid var(--line); border-radius: 0.6rem; background: var(--card); color: var(--fg); }
 	ul { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: 0.6rem; }

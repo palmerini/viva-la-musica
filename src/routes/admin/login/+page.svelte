@@ -14,5 +14,5 @@
 <style>
 	form { display: grid; gap: 0.8rem; margin-top: 1rem; }
 	input { padding: 0.75rem; font: inherit; border: 1px solid var(--line); border-radius: 0.6rem; background: var(--card); color: var(--fg); }
-	.err { color: #c0392b; margin: 0; }
+	.err { color: var(--err); margin: 0; }
 </style>

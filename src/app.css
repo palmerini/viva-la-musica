@@ -1,20 +1,26 @@
 :root {
-	--bg: #f6f4ee;
-	--fg: #1e1d33;
-	--muted: #6b6a80;
-	--brand: #2b2a4c;
-	--accent: #f6c453;
+	/* Palette ricavata dal logo: verde-petrolio dei tratti e verde menta delle sfumature */
+	--bg: #f3f8f5;
+	--fg: #14302f;
+	--muted: #587371;
+	--brand: #1f4f4e;
+	--accent: #bfe5c6;
 	--card: #fff;
-	--line: #e3e0d6;
+	--line: #d3e3de;
+	--nav: #d6ebe3;
+	--err: #b3392b;
 	color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg: #17162b;
-		--fg: #f1efe7;
-		--muted: #a3a2b8;
-		--card: #232240;
-		--line: #34335a;
+		--bg: #0e1d1d;
+		--fg: #e8f2ee;
+		--muted: #93b3ad;
+		--brand: #1d5655;
+		--card: #172b2a;
+		--line: #2a4846;
+		--accent: #b6e6c0;
+		--err: #ff8f80;
 	}
 }
 * { box-sizing: border-box; }
@@ -27,10 +33,11 @@ body {
 }
 header {
 	background: var(--brand);
-	padding: calc(0.9rem + env(safe-area-inset-top)) 1rem 0.9rem;
+	padding: calc(0.6rem + env(safe-area-inset-top)) 1rem 0.6rem;
 }
 .brand { color: var(--accent); font-weight: 700; font-size: 1.2rem; text-decoration: none; }
-main { max-width: 36rem; margin: 0 auto; padding: 1rem 1rem calc(2rem + env(safe-area-inset-bottom)); }
+main { max-width: 36rem; width: 100%; margin: 0 auto; flex: 0 1 auto; padding: 1rem 1rem calc(2rem + env(safe-area-inset-bottom)); }
+main.wide { max-width: none; width: 100%; padding: 0; flex: 1; display: flex; }
 a { color: inherit; }
 button {
 	font: inherit;
@@ -41,4 +48,4 @@ button {
 	padding: 0.6rem 0.9rem;
 	min-height: 2.75rem;
 }
-button.on { background: var(--brand); color: var(--accent); border-color: var(--brand); }
+button.on { background: var(--brand); color: var(--accent); border-color: var(--accent); }

@@ -34,7 +34,7 @@
 				drawComposer: false,
 				drawCredits: false,
 				followCursor: false,
-				cursorsOptions: [{ type: 0, color: '#e6a817', alpha: 0.55, follow: false }]
+				cursorsOptions: [{ type: 0, color: '#2fa36d', alpha: 0.55, follow: false }]
 			});
 			await osmd.load(new Blob([data]) as unknown as string);
 			status = 'ready';

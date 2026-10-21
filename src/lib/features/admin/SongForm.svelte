@@ -89,5 +89,5 @@
 	small, .hint { color: var(--muted); font-weight: 400; }
 	.hint { margin: 0; }
 	.check { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
-	.err { color: #c0392b; margin: 0; }
+	.err { color: var(--err); margin: 0; }
 </style>
