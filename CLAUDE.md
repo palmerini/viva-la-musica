@@ -17,7 +17,8 @@ App personale ("Viva la musica") per un coro SATB amatoriale. Aiuta i coristi a 
 
 ## Modello dati iniziale
 - `song`: id, titolo, compositore/autore, note, voices (JSON: voce di ciascuna traccia con note), created_at.
-- `song_midi`: song_id, data (MIDI in base64). In upload l'admin conferma la mappatura tracce→voci (proposta automatica).
+- `song_midi`: song_id, data (MIDI in base64).
+- `song_score`: song_id, data (spartito MusicXML/.mxl in base64, facoltativo). In upload l'admin conferma la mappatura tracce→voci (proposta automatica).
 
 ## Architettura: estendibilità
 Le funzionalità sono **moduli separati** in `src/lib/features/<nome>/` (componenti, logica, tipi), con le rotte in `src/routes/<nome>/`. Una nuova funzionalità non deve richiedere modifiche invasive alle esistenti. Codice condiviso solo in `src/lib/shared/`. Migrazioni D1 in `migrations/`, numerate.
@@ -37,3 +38,6 @@ Le funzionalità sono **moduli separati** in `src/lib/features/<nome>/` (compone
 - `@tonejs/midi` è CommonJS e non si importa lato server: la pagina brano ha `ssr = false` e `SongForm` lo importa dinamicamente.
 - Produzione: https://viva-la-musica.viva-la-musica.workers.dev (Cloudflare Workers + D1). Deploy con `npm run deploy`; nuove migrazioni con `npx wrangler d1 migrations apply DB --remote` prima del deploy; password con `npx wrangler secret put ADMIN_PASSWORD`.
 - Riconoscimento voci (`features/player/voices.ts`): dal nome traccia (Soprano/Alto/Tenore/Basso…), altrimenti per altezza media se le tracce sono 4. MuseScore esporta una traccia per rigo: se due voci condividono un rigo non si separano ancora.
+- Voci: `Tone.Sampler` con i campioni "choir aahs" di FluidR3_GM, self-hosted in `static/soundfonts/choir_aahs/` (rigenerabili con `scripts/extract-soundfont.mjs`); un campione ogni 3 semitoni, caricati solo nell'estensione del brano e condivisi tra le 4 voci. Ripiego su un sintetizzatore se non si caricano. Limite: i campioni durano ~3 s, le note più lunghe si spengono.
+- Spartito: `opensheetmusicdisplay` (import dinamico in `ScoreView.svelte`, solo se il brano ha lo spartito). Il cursore si sincronizza con i ticks del MIDI (1 semibreve = 4·ppq). Limite: non segue i ritornelli (il MIDI di MuseScore li espande, lo spartito no): dopo un ritornello il cursore resta indietro/fermo.
+- Campioni di prova: `samples/esempio.mid` + `samples/esempio.musicxml` (`node scripts/make-sample.mjs` e `make-sample-xml.mjs`).

@@ -28,5 +28,16 @@ export async function readSongForm(request: Request, opts: { fileRequired: boole
 	} else if (opts.fileRequired) {
 		return { error: fail(400, { error: 'Seleziona un file MIDI' }) };
 	}
-	return { input, bytes };
+
+	// Spartito facoltativo: MusicXML in chiaro o compresso (.mxl, uno zip).
+	let score: ArrayBuffer | null = null;
+	const sf = f.get('score');
+	if (sf instanceof File && sf.size > 0) {
+		if (sf.size > MAX_BYTES) return { error: fail(400, { error: 'Spartito troppo grande (max 2 MB)' }) };
+		score = await sf.arrayBuffer();
+		const head = new TextDecoder().decode(score.slice(0, 200));
+		if (!head.startsWith('PK') && !head.includes('<?xml') && !head.includes('<score-'))
+			return { error: fail(400, { error: 'Lo spartito deve essere un file MusicXML (.mxl o .musicxml)' }) };
+	}
+	return { input, bytes, score, removeScore: f.get('removeScore') === 'on' };
 }

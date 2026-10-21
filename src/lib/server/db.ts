@@ -31,13 +31,31 @@ export interface SongInput {
 	voices: (Voice | null)[] | null;
 }
 
-export async function insertSong(id: string, midi: ArrayBuffer, s: SongInput) {
+export async function insertSong(id: string, midi: ArrayBuffer, s: SongInput, score?: ArrayBuffer | null) {
 	await env.DB.batch([
 		env.DB.prepare('INSERT INTO song (id, title, composer, notes, voices) VALUES (?, ?, ?, ?, ?)').bind(
 			id, s.title, s.composer, s.notes, s.voices ? JSON.stringify(s.voices) : null
 		),
-		env.DB.prepare('INSERT INTO song_midi (song_id, data) VALUES (?, ?)').bind(id, toBase64(midi))
+		env.DB.prepare('INSERT INTO song_midi (song_id, data) VALUES (?, ?)').bind(id, toBase64(midi)),
+		...(score ? [env.DB.prepare('INSERT INTO song_score (song_id, data) VALUES (?, ?)').bind(id, toBase64(score))] : [])
 	]);
+}
+
+/** Imposta lo spartito (MusicXML) del brano; `null` lo rimuove. */
+export async function setScore(id: string, score: ArrayBuffer | null) {
+	await (score
+		? env.DB.prepare('INSERT OR REPLACE INTO song_score (song_id, data) VALUES (?, ?)').bind(id, toBase64(score))
+		: env.DB.prepare('DELETE FROM song_score WHERE song_id = ?').bind(id)
+	).run();
+}
+
+export async function getScore(id: string): Promise<Uint8Array | null> {
+	const r = await env.DB.prepare('SELECT data FROM song_score WHERE song_id = ?').bind(id).first<{ data: string }>();
+	return r ? Uint8Array.from(atob(r.data), (c) => c.charCodeAt(0)) : null;
+}
+
+export async function hasScore(id: string): Promise<boolean> {
+	return !!(await env.DB.prepare('SELECT 1 AS x FROM song_score WHERE song_id = ?').bind(id).first());
 }
 
 export async function replaceMidi(id: string, midi: ArrayBuffer) {
@@ -64,6 +82,7 @@ export async function updateSong(id: string, s: SongInput) {
 
 export async function deleteSong(id: string) {
 	await env.DB.batch([
+		env.DB.prepare('DELETE FROM song_score WHERE song_id = ?').bind(id),
 		env.DB.prepare('DELETE FROM song_midi WHERE song_id = ?').bind(id),
 		env.DB.prepare('DELETE FROM song WHERE id = ?').bind(id)
 	]);

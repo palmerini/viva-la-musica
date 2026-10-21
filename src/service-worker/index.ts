@@ -3,7 +3,8 @@ import { version } from '$app/env';
 import { immutable, assets } from '$app/manifest';
 
 const CACHE = `app-${version}`;
-const SHELL: string[] = [...immutable, ...assets].map((a) => a.path);
+// I campioni audio (~2 MB) non si precaricano: restano nella cache dopo il primo ascolto.
+const SHELL: string[] = [...immutable, ...assets].map((a) => a.path).filter((p) => !p.startsWith('/soundfonts/'));
 
 sw.addEventListener('install', (e: ExtendableEvent) => {
 	e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => sw.skipWaiting()));
@@ -25,7 +26,7 @@ sw.addEventListener('fetch', (e: FetchEvent) => {
 	const url = new URL(req.url);
 	if (url.origin !== location.origin) return;
 
-	if (SHELL.includes(url.pathname)) {
+	if (SHELL.includes(url.pathname) || url.pathname.startsWith('/soundfonts/')) {
 		e.respondWith(caches.match(req).then((r) => r ?? fetch(req)));
 		return;
 	}

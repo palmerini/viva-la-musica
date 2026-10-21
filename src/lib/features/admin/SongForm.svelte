@@ -49,6 +49,15 @@
 		<input type="file" name="file" accept=".mid,.midi,audio/midi" required={!song} onchange={onFile} />
 	</label>
 
+	<label>
+		Spartito (MusicXML, facoltativo)
+		<input type="file" name="score" accept=".mxl,.musicxml,.xml" />
+		<small class="hint">In MuseScore: File → Esporta → MusicXML compresso (.mxl).</small>
+	</label>
+	{#if song?.hasScore}
+		<label class="check"><input type="checkbox" name="removeScore" /> Rimuovi lo spartito attuale</label>
+	{/if}
+
 	{#if parseError}<p class="err">{parseError}</p>{/if}
 	{#if rows.length}
 		<fieldset>
@@ -79,5 +88,6 @@
 	.track span { display: flex; flex-direction: column; }
 	small, .hint { color: var(--muted); font-weight: 400; }
 	.hint { margin: 0; }
+	.check { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
 	.err { color: #c0392b; margin: 0; }
 </style>

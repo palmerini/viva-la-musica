@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { ScorePlayer } from './engine';
+	import ScoreView from './ScoreView.svelte';
 	import { VOICES, VOICE_NAMES, type Voice } from './voices';
-	import type { Song } from '../repertoire/songs';
+	import { scoreUrl, type Song } from '../repertoire/songs';
 	import type { Score } from './midi';
 
 	// Il componente viene ricreato (con {#key}) a ogni cambio di brano.
@@ -12,15 +13,19 @@
 	const player = new ScorePlayer(score);
 	let playing = $state(false);
 	let progress = $state(0);
+	let ticks = $state(0);
 	let rate = $state(1);
 	let volumes = $state(score.parts.map(() => 1));
 	let focus = $state<Voice | 'all'>('all');
 	let raf = 0;
+	let voicesReady = $state(false);
+	player.ready.then(() => (voicesReady = true));
 
 	const available = VOICES.filter((v) => score.parts.some((p) => p.voice === v));
 
 	function tick() {
 		progress = player.progress;
+		ticks = player.ticks;
 		playing = player.playing;
 		raf = requestAnimationFrame(tick);
 	}
@@ -53,7 +58,7 @@
 
 <div class="transport">
 	<button class="on play" onclick={() => (playing ? player.pause() : player.play())}>
-		{playing ? '⏸ Pausa' : '▶ Play'}
+		{playing ? '⏸ Pausa' : voicesReady ? '▶ Play' : '▶ Play (carico le voci…)'}
 	</button>
 	<button onclick={() => player.stop()}>⏹ Stop</button>
 </div>
@@ -61,6 +66,10 @@
 	type="range" min="0" max="1" step="0.001" value={progress} aria-label="Posizione"
 	oninput={(e) => player.seek(+e.currentTarget.value)}
 />
+
+{#if song.hasScore}
+	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} />
+{/if}
 
 <h2>La mia voce</h2>
 <div class="row">

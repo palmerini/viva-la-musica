@@ -9,6 +9,8 @@
 		"worker-configuration.d.ts"
 	],
 	"exclude": [
-		"src/service-worker"
+		"src/service-worker",
+		".svelte-kit/output",
+		".svelte-kit/cloudflare"
 	]
 }
