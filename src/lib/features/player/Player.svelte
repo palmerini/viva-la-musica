@@ -68,7 +68,7 @@
 />
 
 {#if song.hasScore}
-	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} />
+	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} voice={focus} />
 {/if}
 
 <h2>La mia voce</h2>
