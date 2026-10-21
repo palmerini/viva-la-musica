@@ -8,10 +8,8 @@
 		{
 			"binding": "DB",
 			"database_name": "viva-la-musica",
-			// Sostituire con l'id reale dopo `wrangler d1 create viva-la-musica`
-			"database_id": "00000000-0000-0000-0000-000000000000",
+			"database_id": "f660d886-4462-4b74-b42f-b07d2aa2ddf2",
 			"migrations_dir": "migrations"
 		}
-	],
-	"r2_buckets": [{ "binding": "MIDI", "bucket_name": "viva-la-musica-midi" }]
+	]
 }

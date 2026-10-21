@@ -1,6 +1,5 @@
-import { env } from 'cloudflare:workers';
 import { error, redirect } from '@sveltejs/kit';
-import { getSong, updateSong } from '#lib/server/db';
+import { getSong, replaceMidi, updateSong } from '#lib/server/db';
 import { readSongForm } from '#lib/server/songForm';
 
 export const load = async ({ params, parent }) => {
@@ -17,7 +16,7 @@ export const actions = {
 		if (!song) error(404, 'Brano non trovato');
 		const r = await readSongForm(request, { fileRequired: false });
 		if (r.error) return r.error;
-		if (r.bytes) await env.MIDI.put(song.midi_key, r.bytes, { httpMetadata: { contentType: 'audio/midi' } });
+		if (r.bytes) await replaceMidi(params.id, r.bytes);
 		await updateSong(params.id, r.input!);
 		redirect(303, '/admin');
 	}
