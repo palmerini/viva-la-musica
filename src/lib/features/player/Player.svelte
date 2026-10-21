@@ -49,6 +49,7 @@
 <a class="back" href="/">← Repertorio</a>
 <h1>{song.title}</h1>
 {#if song.composer}<p class="muted">{song.composer}</p>{/if}
+{#if song.notes}<p class="notes">{song.notes}</p>{/if}
 
 <div class="transport">
 	<button class="on play" onclick={() => (playing ? player.pause() : player.play())}>
@@ -90,6 +91,7 @@
 	.back { color: var(--muted); text-decoration: none; }
 	h1 { margin: 0.6rem 0 0.2rem; font-size: 1.4rem; }
 	h2 { font-size: 1rem; margin: 1.6rem 0 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+	.notes { white-space: pre-wrap; margin: 0 0 1rem; }
 	.muted { color: var(--muted); margin: 0 0 1rem; }
 	.transport { display: flex; gap: 0.6rem; margin: 1rem 0 0.4rem; }
 	.play { flex: 1; font-size: 1.1rem; }

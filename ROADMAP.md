@@ -2,9 +2,9 @@
 
 ## v1 — Studio della propria parte
 - [~] Scheletro SvelteKit + TS + PWA fatto; manca il deploy su Cloudflare
-- [ ] Schema D1 e bucket R2
-- [ ] Admin: login con password unica
-- [ ] Admin: upload MIDI, mappatura tracce→voci, titolo/note, modifica/eliminazione
+- [x] Schema D1 e bucket R2
+- [x] Admin: login con password unica
+- [x] Admin: upload MIDI, mappatura tracce→voci, titolo/note, modifica/eliminazione
 - [x] Elenco repertorio con ricerca
 - [x] Pagina brano: play/pause/stop, barra di avanzamento
 - [x] Selettore voce: brano intero / solo S / A / T / B

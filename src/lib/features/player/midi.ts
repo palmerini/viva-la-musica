@@ -14,18 +14,25 @@ export interface Score {
 	parts: Part[];
 }
 
-export async function loadScore(url: string, fetchFn: typeof fetch = fetch): Promise<Score> {
+export async function loadScore(
+	url: string,
+	fetchFn: typeof fetch = fetch,
+	voices?: (Voice | null)[] | null
+): Promise<Score> {
 	const res = await fetchFn(url);
 	if (!res.ok) throw new Error(`Impossibile caricare il brano (${res.status})`);
-	return parseScore(await res.arrayBuffer());
+	return parseScore(await res.arrayBuffer(), voices);
 }
 
-export function parseScore(data: ArrayBuffer): Score {
+/** `override`: voce di ciascuna traccia con note, scelta dall'admin (null = nessuna). */
+export function parseScore(data: ArrayBuffer, override?: (Voice | null)[] | null): Score {
 	const midi = new Midi(data);
 	const tracks = midi.tracks.filter((t) => t.notes.length > 0);
 	const meanPitch = (t: (typeof tracks)[number]) =>
 		t.notes.reduce((s, n) => s + n.midi, 0) / t.notes.length;
-	const voices = assignVoices(tracks.map((t) => ({ name: t.name, meanPitch: meanPitch(t) })));
+	const voices = override
+		? tracks.map((_, i) => override[i] ?? undefined)
+		: assignVoices(tracks.map((t) => ({ name: t.name, meanPitch: meanPitch(t) })));
 	const parts: Part[] = tracks.map((t, i) => ({
 		name: t.name || `Traccia ${i + 1}`,
 		voice: voices[i],

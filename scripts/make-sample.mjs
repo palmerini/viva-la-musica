@@ -1,4 +1,4 @@
-// Genera un brano di esempio a 4 voci in static/songs/esempio.mid
+// Genera un brano di esempio a 4 voci in samples/esempio.mid (da caricare dall area admin)
 import pkg from '@tonejs/midi';
 const { Midi } = pkg;
 import { writeFileSync } from 'node:fs';
@@ -19,5 +19,4 @@ for (const v of ['S', 'A', 'T', 'B']) {
 	track.name = names[v];
 	chords.forEach((c, i) => track.addNote({ name: c[v], ticks: i * 960, durationTicks: i === chords.length - 1 ? 1920 : 900, velocity: 0.8 }));
 }
-writeFileSync('static/songs/esempio.mid', Buffer.from(midi.toArray()));
-writeFileSync('static/songs/index.json', JSON.stringify([{ id: 'esempio', title: 'Esempio (cadenza a 4 voci)', composer: 'Brano di prova', midi: '/songs/esempio.mid' }], null, 2));
+writeFileSync('samples/esempio.mid', Buffer.from(midi.toArray()));

@@ -1,13 +1,12 @@
+import type { Voice } from '#lib/features/player/voices';
+
 export interface Song {
 	id: string;
 	title: string;
-	composer?: string;
-	midi: string;
+	composer: string | null;
+	notes: string | null;
+	/** Voce di ciascuna traccia con note; se assente si deduce dal file. */
+	voices: (Voice | null)[] | null;
 }
 
-// Per ora il repertorio è un file statico; in seguito verrà servito da D1/R2.
-export async function listSongs(fetchFn: typeof fetch = fetch): Promise<Song[]> {
-	const res = await fetchFn('/songs/index.json');
-	if (!res.ok) throw new Error('Repertorio non disponibile');
-	return res.json();
-}
+export const midiUrl = (id: string) => `/api/songs/${id}/midi`;
