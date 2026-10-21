@@ -1,0 +1,10 @@
+{
+	"name": "Viva la musica",
+	"short_name": "Viva la musica",
+	"lang": "it",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#f6f4ee",
+	"theme_color": "#2b2a4c",
+	"icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
