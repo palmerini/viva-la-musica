@@ -23,7 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-q { quotes: "“" "”" "‘" "’"; }
 </style>
 
 
@@ -41,10 +40,14 @@ q { quotes: "“" "”" "‘" "’"; }
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6f494fd35b6cb4fba77e1563ee054fb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-1649b1f81e6a4d2ad9934f5fdef8dc3b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-6f494fd35b6cb4fba77e1563ee054fb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -105,7 +108,178 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -130,6 +304,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Gli spiritelli della musica</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -142,7 +319,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><q>Hai sentito quel frrrrr?</q></span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">“Hai sentito quel frrrrr?”</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -189,6 +366,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title"><span id="sec-ghost" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fantasmi</span></span></h1>
@@ -208,13 +386,13 @@ window.Quarto = {
 </header>
 
 
-<p>Quando si suonano due note contemporaneamente, posso succedere altre cose strane. Altri spiritelli possono comparire. Vediamo l’ultimo tipo di questi spiritelli, forse il più affascinante: le note fantasma. Il fenomeno a cui ci riferiamo è noto come <strong>toni di combinazione</strong> (o a volte <q>terzi suoni di Tartini</q>, dal violinista Giuseppe Tartini che li descrisse nel XVIII secolo).</p>
+<p>Quando si suonano due note contemporaneamente, posso succedere altre cose strane. Altri spiritelli possono comparire. Vediamo l’ultimo tipo di questi spiritelli, forse il più affascinante: le note fantasma. Il fenomeno a cui ci riferiamo è noto come <strong>toni di combinazione</strong> (o a volte “terzi suoni di Tartini”, dal violinista Giuseppe Tartini che li descrisse nel XVIII secolo).</p>
 <p>A differenza degli armonici naturali, che nascono dalle vibrazioni di una <em>singola</em> corda o colonna d’aria, questi suoni emergono dall’interazione tra due frequenze diverse.</p>
 <section id="i-due-tipi-principali-di-toni-di-combinazione" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="i-due-tipi-principali-di-toni-di-combinazione"><span class="header-section-number">4.1</span> I due tipi principali di toni di combinazione</h2>
 <p>Esistono due varianti principali di questo fenomeno, classificate in base a come interagiscono le frequenze originali (<span class="math inline">\(f_1\)</span> e <span class="math inline">\(f_2\)</span>):</p>
 <ul>
-<li><strong>Toni differenziali:</strong> Si percepisce una nota la cui frequenza è la differenza tra le due note originali (<span class="math inline">\(f_2 - f_1\)</span>). Se suoni un intervallo di quinta pura, spesso puoi sentire un suono molto basso che funge da <q>fondamentale fantasma</q>.</li>
+<li><strong>Toni differenziali:</strong> Si percepisce una nota la cui frequenza è la differenza tra le due note originali (<span class="math inline">\(f_2 - f_1\)</span>). Se suoni un intervallo di quinta pura, spesso puoi sentire un suono molto basso che funge da “fondamentale fantasma”.</li>
 <li><strong>Toni di somma:</strong> Si genera una frequenza pari alla somma delle due note (<span class="math inline">\(f_1 + f_2\)</span>). Questi sono molto più difficili da udire perché solitamente finiscono in un registro molto acuto dove l’orecchio è meno sensibile o dove vengono mascherati dagli armonici naturali.</li>
 </ul>
 </section>
@@ -236,13 +414,13 @@ window.Quarto = {
 <li><strong>Toni di combinazione:</strong> Sono il risultato dell’incontro tra due note diverse e dipendono dalla biologia del nostro orecchio.</li>
 </ul>
 <blockquote class="blockquote">
-<p><strong>Curiosità:</strong> Gli organisti sfruttano spesso questo fenomeno attraverso il <q>registro acustico</q>. Usano canne di 16 piedi e 10 2/3 piedi per far percepire all’ascoltatore un suono di 32 piedi (molto più profondo e maestoso), risparmiando spazio e costi di costruzione delle canne giganti.</p>
+<p><strong>Curiosità:</strong> Gli organisti sfruttano spesso questo fenomeno attraverso il “registro acustico”. Usano canne di 16 piedi e 10 2/3 piedi per far percepire all’ascoltatore un suono di 32 piedi (molto più profondo e maestoso), risparmiando spazio e costi di costruzione delle canne giganti.</p>
 </blockquote>
-<p>Quando quattro sezioni di un corso (Soprano, Contralto, Tenore, Basso) cantano un accordo con un’intonazione <q>pura</q> (che abbiamo descritto <a href="./pitch.html#sec-just">prima</a>), gli armonici naturali di ogni singola voce iniziano a coincidere perfettamente tra loro.</p>
+<p>Quando quattro sezioni di un corso (Soprano, Contralto, Tenore, Basso) cantano un accordo con un’intonazione “pura” (che abbiamo descritto <a href="./pitch.html#sec-just">prima</a>), gli armonici naturali di ogni singola voce iniziano a coincidere perfettamente tra loro.</p>
 </section>
 <section id="lesempio-pratico-laccordo-di-do-maggiore" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="lesempio-pratico-laccordo-di-do-maggiore"><span class="header-section-number">4.4</span> L’esempio pratico: L’Accordo di Do Maggiore</h2>
-<p>Immaginiamo che il coro stia cantando un accordo di Do Maggiore in stato fondamentale. Se l’intonazione è perfetta, ecco cosa succede <q>sopra</q> le teste dei cantanti:</p>
+<p>Immaginiamo che il coro stia cantando un accordo di Do Maggiore in stato fondamentale. Se l’intonazione è perfetta, ecco cosa succede “sopra” le teste dei cantanti:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -289,16 +467,16 @@ window.Quarto = {
 <section id="perché-senti-quelle-note-alte" class="level2" data-number="4.5">
 <h2 data-number="4.5" class="anchored" data-anchor-id="perché-senti-quelle-note-alte"><span class="header-section-number">4.5</span> Perché senti quelle note alte?</h2>
 <ol type="1">
-<li><strong>Allineamento:</strong> Gli armonici del Basso (che sono multipli della sua nota) vanno a <q>sbattere</q> contro le note cantate dalle altre sezioni. Se il Soprano canta un Mi calante anche solo di pochi cent, l’armonico del Basso e la nota del Soprano <q>litigano</q>.</li>
-<li><strong>Sincronia:</strong> Se invece sono perfettamente intonati, le onde sonore si sommano in fase. Questo crea dei <strong>picchi di risonanza</strong> così forti che l’orecchio percepisce una nota distinta (una sorta di <q>fischio</q> o <q>luce</q> sopra il coro) che nessuno sta effettivamente cantando.</li>
-<li><strong>Il <q>Tredicesimo Cantante</q>:</strong> In un quartetto vocale o un coro, quando senti apparire una quinta o una decima sopra la melodia, è il segno che l’accordo è <q>incastrato</q> perfettamente.</li>
+<li><strong>Allineamento:</strong> Gli armonici del Basso (che sono multipli della sua nota) vanno a “sbattere” contro le note cantate dalle altre sezioni. Se il Soprano canta un Mi calante anche solo di pochi cent, l’armonico del Basso e la nota del Soprano “litigano”.</li>
+<li><strong>Sincronia:</strong> Se invece sono perfettamente intonati, le onde sonore si sommano in fase. Questo crea dei <strong>picchi di risonanza</strong> così forti che l’orecchio percepisce una nota distinta (una sorta di “fischio” o “luce” sopra il coro) che nessuno sta effettivamente cantando.</li>
+<li><strong>Il “Tredicesimo Cantante”:</strong> In un quartetto vocale o un coro, quando senti apparire una quinta o una decima sopra la melodia, è il segno che l’accordo è “incastrato” perfettamente.</li>
 </ol>
 </section>
 <section id="la-differenza-con-i-toni-di-combinazione" class="level2" data-number="4.6">
 <h2 data-number="4.6" class="anchored" data-anchor-id="la-differenza-con-i-toni-di-combinazione"><span class="header-section-number">4.6</span> La differenza con i Toni di Combinazione</h2>
 <p>Se quando canta un coro si sente un effetto <strong>acuto</strong>, allora sono gli armonici naturali che risuonano insieme. Se invece si sente una nota <strong>estremamente grave</strong> (un ronzio profondo sotto i bassi), allora sono i toni differenziali di cui parlavamo prima.</p>
 <blockquote class="blockquote">
-<p><strong>Nota di colore:</strong> Alcuni compositori contemporanei di musica corale, come <strong>Eric Whitacre</strong> o <strong>Morten Lauridsen</strong>, scrivono accordi con Cluster (note molto vicine) proprio per generare questi effetti di interferenza e <q>scintillio</q> sonoro che danno al coro un suono quasi soprannaturale.</p>
+<p><strong>Nota di colore:</strong> Alcuni compositori contemporanei di musica corale, come <strong>Eric Whitacre</strong> o <strong>Morten Lauridsen</strong>, scrivono accordi con Cluster (note molto vicine) proprio per generare questi effetti di interferenza e “scintillio” sonoro che danno al coro un suono quasi soprannaturale.</p>
 </blockquote>
 </section>
 <section id="e-se-si-canta-la-stessa-nota" class="level2" data-number="4.7">
@@ -308,29 +486,29 @@ window.Quarto = {
 </section>
 <section id="cosa-succede-allunisono" class="level2" data-number="4.8">
 <h2 data-number="4.8" class="anchored" data-anchor-id="cosa-succede-allunisono"><span class="header-section-number">4.8</span> Cosa succede all’unisono?</h2>
-<p>Quando un intero coro canta un <q>Do</q>, non sta producendo una sola frequenza pura (come quella che abbiamo sentito <a href="./index.html#sec-sinusoide">prima</a>), ma una <strong>frequenza fondamentale</strong> accompagnata da una serie di <strong>armonici naturali</strong> (multipli di quella nota).</p>
+<p>Quando un intero coro canta un “Do”, non sta producendo una sola frequenza pura (come quella che abbiamo sentito <a href="./index.html#sec-sinusoide">prima</a>), ma una <strong>frequenza fondamentale</strong> accompagnata da una serie di <strong>armonici naturali</strong> (multipli di quella nota).</p>
 <ol type="1">
-<li><strong>La <q>Fusione</q> degli Armonici:</strong> Se i cantanti sono perfettamente intonati tra loro e, soprattutto, usano le <strong>stesse vocali</strong> (stessa forma della bocca), i loro armonici individuali si allineano.</li>
+<li><strong>La “Fusione” degli Armonici:</strong> Se i cantanti sono perfettamente intonati tra loro e, soprattutto, usano le <strong>stesse vocali</strong> (stessa forma della bocca), i loro armonici individuali si allineano.</li>
 <li><strong>L’Effetto Quantità:</strong> Se 40 persone cantano un Do2, il loro 4º armonico (un Do4) sarà cantato da 40 persone contemporaneamente. Se le fasi delle onde sonore coincidono, l’ampiezza di quell’armonico aumenta drasticamente.</li>
-<li><strong>Il <q>Colore</q> del Suono:</strong> È questo il motivo per cui un coro di 50 persone che canta all’unisono suona molto più <q>ricco</q> e <q>brillante</q> di un singolo cantante amplificato. Senti letteralmente delle note acute che <q>galleggiano</q> sopra la nota fondamentale.</li>
+<li><strong>Il “Colore” del Suono:</strong> È questo il motivo per cui un coro di 50 persone che canta all’unisono suona molto più “ricco” e “brillante” di un singolo cantante amplificato. Senti letteralmente delle note acute che “galleggiano” sopra la nota fondamentale.</li>
 </ol>
 </section>
 <section id="le-due-condizioni-necessarie" class="level2" data-number="4.9">
 <h2 data-number="4.9" class="anchored" data-anchor-id="le-due-condizioni-necessarie"><span class="header-section-number">4.9</span> Le due condizioni necessarie</h2>
 <p>Perché questo accada all’unisono, servono due ingredienti fondamentali:</p>
 <ul>
-<li><strong>Intonazione Millimetrica:</strong> Se un cantante è anche solo leggermente <q>calante</q> o <q>crescente</q>, gli armonici non si sommano più in modo costruttivo. Invece di rinforzarsi, creano dei <strong>battimenti</strong> (quel suono <q>ondulato</q> o vibrante che indica scordatura).</li>
-<li><strong>Omogeneità delle Vocali:</strong> Questo è il segreto dei grandi direttori di coro. Se i soprani cantano una <q>A</q> aperta e i tenori una <q>A</q> più scura (più simile a una <q>O</q>), gli armonici non coincideranno perché la forma della bocca seleziona quali armonici enfatizzare. Quando la vocale è identica per tutti, il coro <q>splende</q>.</li>
+<li><strong>Intonazione Millimetrica:</strong> Se un cantante è anche solo leggermente “calante” o “crescente”, gli armonici non si sommano più in modo costruttivo. Invece di rinforzarsi, creano dei <strong>battimenti</strong> (quel suono “ondulato” o vibrante che indica scordatura).</li>
+<li><strong>Omogeneità delle Vocali:</strong> Questo è il segreto dei grandi direttori di coro. Se i soprani cantano una “A” aperta e i tenori una “A” più scura (più simile a una “O”), gli armonici non coincideranno perché la forma della bocca seleziona quali armonici enfatizzare. Quando la vocale è identica per tutti, il coro “splende”.</li>
 </ul>
 </section>
 <section id="differenza-tra-unisono-e-accordo" class="level2" data-number="4.10">
 <h2 data-number="4.10" class="anchored" data-anchor-id="differenza-tra-unisono-e-accordo"><span class="header-section-number">4.10</span> Differenza tra Unisono e Accordo</h2>
 <ul>
 <li><strong>All’unisono:</strong> Rinforzi gli armonici che sono <strong>già presenti</strong> nella nota fondamentale (Do -&gt; Do, Sol, Do, Mi…). Il suono diventa più potente e cristallino.</li>
-<li><strong>In un accordo:</strong> Gli armonici di note diverse (es. Do e Sol) si incastrano tra loro creando una trama complessa. È qui che nascono i <q>toni di combinazione</q> (note nuove che non esistevano prima) e una sensazione di <q>volume fisico</q> dell’accordo.</li>
+<li><strong>In un accordo:</strong> Gli armonici di note diverse (es. Do e Sol) si incastrano tra loro creando una trama complessa. È qui che nascono i “toni di combinazione” (note nuove che non esistevano prima) e una sensazione di “volume fisico” dell’accordo.</li>
 </ul>
 <blockquote class="blockquote">
-<p><strong>Curiosità:</strong> Il <strong>canto armonico</strong> (tipico della Mongolia o di Tuva) è la tecnica estrema di questo fenomeno: un singolo cantante modula la bocca così bene da isolare e amplificare un singolo armonico sopra la nota che sta cantando, dando l’impressione di fare un <q>fischio</q> melodico mentre emette un suono grave.</p>
+<p><strong>Curiosità:</strong> Il <strong>canto armonico</strong> (tipico della Mongolia o di Tuva) è la tecnica estrema di questo fenomeno: un singolo cantante modula la bocca così bene da isolare e amplificare un singolo armonico sopra la nota che sta cantando, dando l’impressione di fare un “fischio” melodico mentre emette un suono grave.</p>
 </blockquote>
 
 
@@ -339,6 +517,19 @@ window.Quarto = {
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {

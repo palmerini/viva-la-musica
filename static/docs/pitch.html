@@ -23,7 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-q { quotes: "“" "”" "‘" "’"; }
 </style>
 
 
@@ -42,10 +41,14 @@ q { quotes: "“" "”" "‘" "’"; }
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6f494fd35b6cb4fba77e1563ee054fb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-1649b1f81e6a4d2ad9934f5fdef8dc3b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-6f494fd35b6cb4fba77e1563ee054fb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -106,7 +109,178 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -131,6 +305,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Gli spiritelli della musica</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -143,7 +320,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><q>Hai sentito quel frrrrr?</q></span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">“Hai sentito quel frrrrr?”</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -176,8 +353,8 @@ window.Quarto = {
   <ul>
   <li><a href="#pitch-drift" id="toc-pitch-drift" class="nav-link active" data-scroll-target="#pitch-drift"><span class="header-section-number">3.1</span> Pitch-drift</a></li>
   <li><a href="#il-paradosso-del-supporto-muscolare-fisiologico" id="toc-il-paradosso-del-supporto-muscolare-fisiologico" class="nav-link" data-scroll-target="#il-paradosso-del-supporto-muscolare-fisiologico"><span class="header-section-number">3.2</span> Il paradosso del supporto muscolare (Fisiologico)</a></li>
-  <li><a href="#la-tessitura-e-i-passaggi-di-registro-fisiologico" id="toc-la-tessitura-e-i-passaggi-di-registro-fisiologico" class="nav-link" data-scroll-target="#la-tessitura-e-i-passaggi-di-registro-fisiologico"><span class="header-section-number">3.3</span> La <q>Tessitura</q> e i passaggi di registro (Fisiologico)</a></li>
-  <li><a href="#la-sindrome-della-comodità-psicologico" id="toc-la-sindrome-della-comodità-psicologico" class="nav-link" data-scroll-target="#la-sindrome-della-comodità-psicologico"><span class="header-section-number">3.4</span> La <q>Sindrome della comodità</q> (Psicologico)</a></li>
+  <li><a href="#la-tessitura-e-i-passaggi-di-registro-fisiologico" id="toc-la-tessitura-e-i-passaggi-di-registro-fisiologico" class="nav-link" data-scroll-target="#la-tessitura-e-i-passaggi-di-registro-fisiologico"><span class="header-section-number">3.3</span> La “Tessitura” e i passaggi di registro (Fisiologico)</a></li>
+  <li><a href="#la-sindrome-della-comodità-psicologico" id="toc-la-sindrome-della-comodità-psicologico" class="nav-link" data-scroll-target="#la-sindrome-della-comodità-psicologico"><span class="header-section-number">3.4</span> La “Sindrome della comodità” (Psicologico)</a></li>
   <li><a href="#sec-just" id="toc-sec-just" class="nav-link" data-scroll-target="#sec-just"><span class="header-section-number">3.5</span> L’intonazione giusta vs.&nbsp;quella temperata</a></li>
   <li><a href="#la-progressione-che-fa-calare" id="toc-la-progressione-che-fa-calare" class="nav-link" data-scroll-target="#la-progressione-che-fa-calare"><span class="header-section-number">3.6</span> La progressione che fa calare</a></li>
   <li><a href="#lesempio-più-drammatico-la-terza-pitagorica" id="toc-lesempio-più-drammatico-la-terza-pitagorica" class="nav-link" data-scroll-target="#lesempio-più-drammatico-la-terza-pitagorica"><span class="header-section-number">3.7</span> L’esempio più drammatico: la terza pitagorica</a></li>
@@ -195,6 +372,7 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -224,25 +402,25 @@ window.Quarto = {
 <h2 data-number="3.2" class="anchored" data-anchor-id="il-paradosso-del-supporto-muscolare-fisiologico"><span class="header-section-number">3.2</span> Il paradosso del supporto muscolare (Fisiologico)</h2>
 <p>Quando un brano comincia in una tonalità comoda (o leggermente bassa), i cantanti tendono a rilassarsi. Questo rilassamento è il nemico numero uno dell’intonazione <em>a cappella</em>. In questo caso la soluzione potrebbe essere cantare il brano in una tonalità più alta, ad esempio un tono sopra l’originale. Perché se il coro tende a calare, alzare la tonalità sembra risolvere il problema? Vediamo cosa succede nei due casi.</p>
 <ul>
-<li><strong>Nella tonalità originale:</strong> Sentendo il brano <q>alla portata</q>, il coro tende a usare meno il diaframma e a ridurre il supporto del fiato. Senza accorgersene, la colonna d’aria si sgonfia, la muscolatura laringea si adagia e la tonalità cala millimetro dopo millimetro.</li>
-<li><strong>Nella tonalità più alta:</strong> Poiché il brano è percepito come più difficile, i cantanti <strong>attivano inconsciamente una maggiore pressione subglottica</strong> (insomma, spingono di più con il fiato e usano meglio il corpo). Questo maggiore supporto muscolare sostiene la colonna d’aria e <q>tiene su</q> l’intonazione per tutta la durata del pezzo.</li>
+<li><strong>Nella tonalità originale:</strong> Sentendo il brano “alla portata”, il coro tende a usare meno il diaframma e a ridurre il supporto del fiato. Senza accorgersene, la colonna d’aria si sgonfia, la muscolatura laringea si adagia e la tonalità cala millimetro dopo millimetro.</li>
+<li><strong>Nella tonalità più alta:</strong> Poiché il brano è percepito come più difficile, i cantanti <strong>attivano inconsciamente una maggiore pressione subglottica</strong> (insomma, spingono di più con il fiato e usano meglio il corpo). Questo maggiore supporto muscolare sostiene la colonna d’aria e “tiene su” l’intonazione per tutta la durata del pezzo.</li>
 </ul>
 </section>
 <section id="la-tessitura-e-i-passaggi-di-registro-fisiologico" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="la-tessitura-e-i-passaggi-di-registro-fisiologico"><span class="header-section-number">3.3</span> La <q>Tessitura</q> e i passaggi di registro (Fisiologico)</h2>
+<h2 data-number="3.3" class="anchored" data-anchor-id="la-tessitura-e-i-passaggi-di-registro-fisiologico"><span class="header-section-number">3.3</span> La “Tessitura” e i passaggi di registro (Fisiologico)</h2>
 <p>Un motivo leggermente diverso, ma sempre legato alla fisiologia della voce, potrebbe essere legato al registro in cui un certo brano si trova. Anche in questo caso, la soluzione controintuitiva è che alzando il brano il problema potrebbe risolversi. Vediamo meglio.</p>
 <p>Ogni sezione del coro (soprani, contralti, tenori, bassi) ha una zona della voce chiamata <em>tessitura</em>, dove cantare è più naturale, e dei punti critici chiamati <em>punti di passaggio</em> (dove la voce cambia registro, ad esempio da voce di petto a voce di testa).</p>
-<p>Spostare un brano anche solo di un semitono può spostare l’intera melodia fuori da una <q>zona d’ombra</q> vocale.</p>
-<p>Se nella tonalità originale molte note centrali insistevano proprio sul punto di passaggio, i cantanti potrebbero aver teso a <q>ingrossare</q> i suoni centrali per farli sentire, appesantendo la corda vocale (fino a farla calare). Alzando il brano, quelle stesse note sono entrate decisamente nel registro superiore (voce di testa o misto), dove le corde vocali sono più tese e sottili, rendendo il pitch (l’altezza della nota) molto più stabile.</p>
+<p>Spostare un brano anche solo di un semitono può spostare l’intera melodia fuori da una “zona d’ombra” vocale.</p>
+<p>Se nella tonalità originale molte note centrali insistevano proprio sul punto di passaggio, i cantanti potrebbero aver teso a “ingrossare” i suoni centrali per farli sentire, appesantendo la corda vocale (fino a farla calare). Alzando il brano, quelle stesse note sono entrate decisamente nel registro superiore (voce di testa o misto), dove le corde vocali sono più tese e sottili, rendendo il pitch (l’altezza della nota) molto più stabile.</p>
 </section>
 <section id="la-sindrome-della-comodità-psicologico" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="la-sindrome-della-comodità-psicologico"><span class="header-section-number">3.4</span> La <q>Sindrome della comodità</q> (Psicologico)</h2>
+<h2 data-number="3.4" class="anchored" data-anchor-id="la-sindrome-della-comodità-psicologico"><span class="header-section-number">3.4</span> La “Sindrome della comodità” (Psicologico)</h2>
 <p>C’è anche una componente mentale. Quando cantate nella tonalità originale, l’orecchio si adatta alla familiarità dei suoni. Se il coro cala tutto insieme in modo omogeneo, l’orecchio interno non percepisce la discrepanza perché i rapporti intervallari (le distanze tra le note) rimangono corretti. È la cosiddetta <em>corrente del golfo</em>: vi trascina via tutti insieme e nessuno se ne accorge finché non si ferma la musica.</p>
-<p>Alzando di un semitono, la novità e la sensazione di <q>allerta</q> costringono il cervello a un livello di ascolto reciproco e di concentrazione molto più alto.</p>
+<p>Alzando di un semitono, la novità e la sensazione di “allerta” costringono il cervello a un livello di ascolto reciproco e di concentrazione molto più alto.</p>
 </section>
 <section id="sec-just" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="sec-just"><span class="header-section-number">3.5</span> L’intonazione giusta vs.&nbsp;quella temperata</h2>
-<p>In realtà c’è anche un altro fattore importante, che però non viene risolto cambiando la tonalità. Cantando a cappella, i cori tendono naturalmente verso l’intonazione pura, detta anceh <q>giusta</q>, dove certi intervalli sono leggermente diversi dal temperamento equabile del pianoforte. Alcune progressioni armoniche, se <q>intonate puramente</q>, producono una deriva cumulativa verso il basso — è matematicamente inevitabile in certi giri armonici.</p>
+<p>In realtà c’è anche un altro fattore importante, che però non viene risolto cambiando la tonalità. Cantando a cappella, i cori tendono naturalmente verso l’intonazione pura, detta anceh “giusta”, dove certi intervalli sono leggermente diversi dal temperamento equabile del pianoforte. Alcune progressioni armoniche, se “intonate puramente”, producono una deriva cumulativa verso il basso — è matematicamente inevitabile in certi giri armonici.</p>
 <p>Il problema fondamentale è questo: nell’intonazione pura, una quinta giusta ha rapporto di frequenza esatto 3:2. Se fai 12 quinte consecutive, dovresti tornare alla nota di partenza (7 ottave sopra). Ma matematicamente:</p>
 <p>12 quinte pure = (3/2)¹² = 129.746…</p>
 <p>7 ottave = 2⁷ = 128</p>
@@ -272,7 +450,7 @@ c=1200 \log_2\left( \frac{129.746}{128} \right)=23
 <tbody>
 <tr class="odd">
 <td>Do → Fa (quarta pura 4:3)</td>
-<td>il Do <q>scende</q> di 2 cent rispetto al temperato</td>
+<td>il Do “scende” di 2 cent rispetto al temperato</td>
 </tr>
 <tr class="even">
 <td>Fa → Sol (seconda)</td>
@@ -280,7 +458,7 @@ c=1200 \log_2\left( \frac{129.746}{128} \right)=23
 </tr>
 <tr class="odd">
 <td>Sol → Do (quinta pura 3:2)</td>
-<td>il Do <q>scende</q> ancora di ~2 cent</td>
+<td>il Do “scende” ancora di ~2 cent</td>
 </tr>
 </tbody>
 </table>
@@ -291,12 +469,12 @@ c=1200 \log_2\left( \frac{129.746}{128} \right)=23
 <p>Ancora più insidioso è quando ci sono terze maggiori. Nell’intonazione pura la terza maggiore è 5:4 (386 cent), mentre nel temperamento equabile è 400 cent — ben 14 cent di differenza.</p>
 <p>Consideriamo questa progressione:</p>
 <p>Do maggiore → Mi maggiore → Sol diesis maggiore → Do maggiore</p>
-<p>Ogni accordo, intonato puramente, abbassa la terza di 14 cent. Dopo tre passaggi sei già 42 cent sotto — quasi un quarto di tono! Questo è il famoso <q>comma sintonico</q> e rende questa progressione praticamente impossibile da tenere in intonazione a cappella senza scendere.</p>
-<p>Il meccanismo subdolo è che ogni singolo accordo suona benissimo — anzi, meglio del temperato, più consonante e <q>pieno</q>. Il coro si sente intonato ad ogni momento. È solo confrontando la nota finale con quella iniziale che emerge la deriva. È come scendere una scala a chiocciola: ogni gradino sembra orizzontale, ma alla fine sei molto più in basso.</p>
+<p>Ogni accordo, intonato puramente, abbassa la terza di 14 cent. Dopo tre passaggi sei già 42 cent sotto — quasi un quarto di tono! Questo è il famoso “comma sintonico” e rende questa progressione praticamente impossibile da tenere in intonazione a cappella senza scendere.</p>
+<p>Il meccanismo subdolo è che ogni singolo accordo suona benissimo — anzi, meglio del temperato, più consonante e “pieno”. Il coro si sente intonato ad ogni momento. È solo confrontando la nota finale con quella iniziale che emerge la deriva. È come scendere una scala a chiocciola: ogni gradino sembra orizzontale, ma alla fine sei molto più in basso.</p>
 </section>
 <section id="yesterday" class="level2" data-number="3.8">
 <h2 data-number="3.8" class="anchored" data-anchor-id="yesterday"><span class="header-section-number">3.8</span> Yesterday</h2>
-<p>Ad esempio, se per caso volessimo cantare <q>Yesterday</q> dei Beatles con un coro, è molto probabile che incorreremmo in questo tipo di errore. Vediamo perché.</p>
+<p>Ad esempio, se per caso volessimo cantare “Yesterday” dei Beatles con un coro, è molto probabile che incorreremmo in questo tipo di errore. Vediamo perché.</p>
 <p>La progressione completa è: <strong>F → Em7b5 → A7 → Dm → Bb → C7 → F</strong>, con una sezione bridge che aggiunge <strong>Dm → G7 → Bb → F</strong>.</p>
 <p>Questa canzone è un caso quasi da manuale per il pitch drift. Ecco perché:</p>
 <section id="punto-critico-1-il-passaggio-em7b5-a7-dm" class="level3" data-number="3.8.1">
@@ -336,7 +514,7 @@ c=1200 \log_2\left( \frac{129.746}{128} \right)=23
 </section>
 <section id="cosa-fare-adesso" class="level2" data-number="3.11">
 <h2 data-number="3.11" class="anchored" data-anchor-id="cosa-fare-adesso"><span class="header-section-number">3.11</span> Cosa fare adesso?</h2>
-<p>Beh, se alzare di un semitono ha funzionato, come direbbe un bravo maestro, <q>Teniamola così!</q>.</p>
+<p>Beh, se alzare di un semitono ha funzionato, come direbbe un bravo maestro, “Teniamola così!”.</p>
 
 
 </section>
@@ -344,6 +522,19 @@ c=1200 \log_2\left( \frac{129.746}{128} \right)=23
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
