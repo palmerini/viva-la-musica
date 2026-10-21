@@ -22,17 +22,19 @@ export function voiceFromName(name: string): Voice | undefined {
 }
 
 /**
- * Assegna una voce a ciascuna traccia: prima dal nome, poi (se le tracce sono
- * esattamente 4) dall'altezza media, dalla più acuta alla più grave.
+ * Assegna una voce a ciascuna traccia: prima dal nome; se le tracce sono
+ * esattamente 4, quelle senza nome riconosciuto ricevono le voci rimaste
+ * in base all'altezza media, dalla più acuta alla più grave.
  */
 export function assignVoices(tracks: { name: string; meanPitch: number }[]): (Voice | undefined)[] {
-	const byName = tracks.map((t) => voiceFromName(t.name));
-	if (byName.every(Boolean) && new Set(byName).size === byName.length) return byName;
-	if (tracks.length === 4) {
-		const order = tracks.map((t, i) => [t.meanPitch, i] as const).sort((a, b) => b[0] - a[0]);
-		const out: (Voice | undefined)[] = [];
-		order.forEach(([, i], rank) => (out[i] = VOICES[rank]));
-		return out;
+	const out = tracks.map((t) => voiceFromName(t.name));
+	if (tracks.length === 4 && new Set(out.filter(Boolean)).size === out.filter(Boolean).length) {
+		const free = VOICES.filter((v) => !out.includes(v));
+		tracks
+			.map((t, i) => [t.meanPitch, i] as const)
+			.filter(([, i]) => !out[i])
+			.sort((a, b) => b[0] - a[0])
+			.forEach(([, i], rank) => (out[i] = free[rank]));
 	}
-	return byName;
+	return out;
 }

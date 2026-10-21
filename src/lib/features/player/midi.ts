@@ -27,7 +27,13 @@ export async function loadScore(
 /** `override`: voce di ciascuna traccia con note, scelta dall'admin (null = nessuna). */
 export function parseScore(data: ArrayBuffer, override?: (Voice | null)[] | null): Score {
 	const midi = new Midi(data);
-	const tracks = midi.tracks.filter((t) => t.notes.length > 0);
+	// MuseScore esporta il nome del rigo in una traccia vuota che precede quella con le note.
+	const tracks = midi.tracks
+		.map((t, i) => ({
+			notes: t.notes,
+			name: t.name || (midi.tracks[i - 1]?.notes.length === 0 ? midi.tracks[i - 1].name : '')
+		}))
+		.filter((t) => t.notes.length > 0);
 	const meanPitch = (t: (typeof tracks)[number]) =>
 		t.notes.reduce((s, n) => s + n.midi, 0) / t.notes.length;
 	const voices = override
