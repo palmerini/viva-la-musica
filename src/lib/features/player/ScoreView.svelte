@@ -3,7 +3,8 @@
 	import type { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 	import { VOICES, voiceFromName, type Voice } from './voices';
 
-	let { url, ppq, ticks, voice }: { url: string; ppq: number; ticks: number; voice: Voice | 'all' } = $props();
+	/** `voices`: voci scelte nel player (vuoto = tutte). */
+	let { url, ppq, ticks, voices }: { url: string; ppq: number; ticks: number; voices: Voice[] } = $props();
 
 	let box: HTMLDivElement;
 	let osmd: OpenSheetMusicDisplay | undefined;
@@ -11,7 +12,7 @@
 	/** Una sola riga che scorre in orizzontale (comoda sul telefono) oppure righe a pagina. */
 	let horizontal = $state(false);
 	let zoom = $state(1);
-	/** Con una voce scelta, mostra solo il suo rigo. */
+	/** Con voci scelte, mostra solo i loro righi. */
 	let mineOnly = $state(true);
 	/** Posizione (in semibrevi) di ogni passo del cursore. Segue i ritornelli, come il MIDI esportato da MuseScore. */
 	let stamps: number[] = [];
@@ -53,12 +54,12 @@
 	/** Ridisegna lo spartito con le opzioni correnti e riallinea il cursore alla riproduzione. */
 	function rebuild() {
 		if (!osmd) return;
-		const only = mineOnly && voice !== 'all' ? voice : null;
+		const only = mineOnly && voices.length ? [...voices] : null;
 		osmd.setOptions({ renderSingleHorizontalStaffline: horizontal, drawPartNames: !only });
 		osmd.zoom = zoom;
 		osmd.Sheet.Instruments.forEach((inst, i) => {
 			const v = voiceFromName(inst.Name) ?? VOICES[i];
-			inst.Visible = !only || v === only;
+			inst.Visible = !only || (!!v && only.includes(v));
 		});
 		osmd.render();
 		osmd.cursor.show();
@@ -76,7 +77,7 @@
 	// Ridisegna quando cambiano le preferenze di visualizzazione o la voce scelta.
 	let first = true;
 	$effect(() => {
-		void [horizontal, zoom, mineOnly, voice];
+		void [horizontal, zoom, mineOnly, voices.join()];
 		if (first || status !== 'ready') {
 			first = false;
 			return;
@@ -140,8 +141,8 @@
 			<button onclick={() => (zoom = clamp(zoom - 0.1))} aria-label="Rimpicciolisci">−</button>
 			<span class="zoom">{Math.round(zoom * 100)}%</span>
 			<button onclick={() => (zoom = clamp(zoom + 0.1))} aria-label="Ingrandisci">＋</button>
-			{#if voice !== 'all'}
-				<button class:on={mineOnly} onclick={() => (mineOnly = !mineOnly)} aria-pressed={mineOnly}>Solo la mia voce</button>
+			{#if voices.length}
+				<button class:on={mineOnly} onclick={() => (mineOnly = !mineOnly)} aria-pressed={mineOnly}>{voices.length > 1 ? 'Solo le voci scelte' : 'Solo la mia voce'}</button>
 			{/if}
 		</div>
 	{/if}

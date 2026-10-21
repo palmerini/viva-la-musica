@@ -14,10 +14,10 @@
 	let playing = $state(false);
 	let progress = $state(0);
 	let ticks = $state(0);
-	// Mostra/nascondi lo spartito; la scelta resta sul dispositivo.
-	let showScore = $state(true);
+	// Mostra/nascondi lo spartito: di default è nascosto; la scelta resta sul dispositivo.
+	let showScore = $state(false);
 	try {
-		showScore = localStorage.getItem('showScore') !== '0';
+		showScore = localStorage.getItem('showScore') === '1';
 	} catch {}
 	function toggleScore() {
 		showScore = !showScore;
@@ -27,7 +27,10 @@
 	}
 	let rate = $state(1);
 	let volumes = $state(score.parts.map(() => 1));
-	let focus = $state<Voice | 'all'>('all');
+	/** Voci scelte (vuoto = tutte). */
+	let selected = $state<Voice[]>([]);
+	/** Con voci scelte: le altre restano in sottofondo invece di tacere. */
+	let background = $state(false);
 	let raf = 0;
 	let voicesReady = $state(false);
 	player.ready.then(() => (voicesReady = true));
@@ -50,13 +53,27 @@
 		volumes.forEach((v, i) => player.setVolume(i, v));
 	}
 
-	/** all = tutte; solo = solo la voce scelta; with = la voce scelta in evidenza, le altre basse. */
-	function preset(voice: Voice | 'all', mode: 'solo' | 'with' = 'solo') {
-		focus = voice;
+	/** Nessuna voce scelta = tutte a pieno volume; altrimenti le scelte a pieno volume e le altre mute (o basse). */
+	function applySelection() {
 		volumes = score.parts.map((p) =>
-			voice === 'all' || p.voice === voice ? 1 : mode === 'with' ? 0.25 : 0
+			!selected.length || (p.voice && selected.includes(p.voice)) ? 1 : background ? 0.25 : 0
 		);
 		applyVolumes();
+	}
+
+	function toggleVoice(v: Voice) {
+		selected = selected.includes(v) ? selected.filter((x) => x !== v) : [...selected, v];
+		applySelection();
+	}
+
+	function selectAll() {
+		selected = [];
+		applySelection();
+	}
+
+	function toggleBackground() {
+		background = !background;
+		applySelection();
 	}
 </script>
 
@@ -82,18 +99,22 @@
 />
 
 {#if song.hasScore && showScore}
-	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} voice={focus} />
+	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} voices={selected} />
 {/if}
 
-<h2>La mia voce</h2>
+<h2>Le mie voci</h2>
 <div class="row">
-	<button class:on={focus === 'all'} onclick={() => preset('all')}>Tutte</button>
+	<button class:on={!selected.length} aria-pressed={!selected.length} onclick={selectAll}>Tutte</button>
 	{#each available as v}
-		<button class:on={focus === v} onclick={() => preset(v, 'solo')}>{VOICE_NAMES[v]}</button>
+		<button class:on={selected.includes(v)} aria-pressed={selected.includes(v)} onclick={() => toggleVoice(v)}>
+			{VOICE_NAMES[v]}
+		</button>
 	{/each}
 </div>
-{#if focus !== 'all'}
-	<button class="link" onclick={() => preset(focus, 'with')}>… oppure ascoltala sopra le altre voci</button>
+{#if selected.length}
+	<button class="link" class:active={background} aria-pressed={background} onclick={toggleBackground}>
+		{background ? '✓ ' : ''}Fai sentire le altre voci a basso volume
+	</button>
 {/if}
 
 <h2>Mixer</h2>
@@ -121,5 +142,6 @@
 	.row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 	input[type='range'] { width: 100%; accent-color: var(--brand); }
 	.mix { display: grid; grid-template-columns: 6.5rem 1fr; align-items: center; gap: 0.6rem; margin: 0.3rem 0; }
+	.link.active { color: var(--fg); }
 	.link { border: none; background: none; color: var(--muted); text-decoration: underline; padding: 0.5rem 0; }
 </style>
