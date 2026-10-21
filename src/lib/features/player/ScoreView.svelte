@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, untrack } from 'svelte';
 	import type { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 	import { VOICES, voiceFromName, type Voice } from './voices';
 
@@ -81,13 +81,15 @@
 			first = false;
 			return;
 		}
-		rebuild();
+		// untrack: rebuild() legge `ticks`; senza, l'effetto si rilancerebbe a ogni avanzamento e ridisegnerebbe tutto di continuo.
+		untrack(rebuild);
 	});
 
 	/** Porta il cursore al punto di riproduzione: 1 semibreve = 4 quarti = 4 * ppq ticks. */
 	function sync(jump = false) {
 		if (!osmd || !stamps.length) return;
 		const whole = ticks / (ppq * 4);
+		const from = at;
 		let target = at;
 		while (target + 1 < stamps.length && stamps[target + 1] <= whole + 1e-6) target++;
 		while (target > 0 && stamps[target] > whole + 1e-6) target--;
@@ -101,7 +103,7 @@
 				at++;
 			}
 		}
-		if (target !== at || jump) keepInView(jump);
+		if (target !== from || jump) keepInView(jump);
 	}
 
 	$effect(() => {
