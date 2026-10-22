@@ -1,0 +1,13 @@
+Viva la musica
+Copyright 2026 Paolo Palmerini
+
+Questo software è distribuito con licenza Apache 2.0 (vedi LICENSE).
+
+Componenti di terze parti, ciascuno con la propria licenza:
+- Svelte e SvelteKit (MIT)
+- Tone.js e @tonejs/midi (MIT)
+- OpenSheetMusicDisplay (BSD 3-Clause)
+- Campioni audio "Choir Aahs" da FluidR3_GM (Frank Wen), nella versione MP3 di
+  https://github.com/gleitz/midi-js-soundfonts, in static/soundfonts/
+- "Gli spiritelli della musica" (Paolo Palmerini, Apache 2.0), in static/docs/,
+  dal repository https://github.com/palmerini/battimenti

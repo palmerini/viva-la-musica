@@ -1,56 +1,24 @@
-# sv
+# Viva la musica
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+App per i coristi del coro **Viva La Musica** (Milano), un coro SATB amatoriale: repertorio, ascolto dei brani per voce, spartito che segue la riproduzione e documentazione.
 
-## Creating a project
+È una web app installabile (PWA), pensata soprattutto per il telefono. Gira su Cloudflare (Workers + D1).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Funzioni
+- Repertorio caricato da un admin (MIDI e, facoltativo, spartito MusicXML da MuseScore).
+- Ascolto del brano intero o delle voci scelte (anche più di una), con volume per voce e velocità regolabile.
+- Spartito con cursore sincronizzato alla riproduzione.
+- Sezione Documentazione ("Gli spiritelli della musica") dentro l'app.
 
+## Sviluppo
 ```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@1.1.1 create --template minimal --types ts --no-install /private/tmp/claude-502/-Users-paolopalmerini-claudio-py/a952e7a5-8e04-471d-9f63-0e6fe991d1e4/scratchpad/app
-```
-
-## Adding features
-
-Add features to your project with `sv add`:
-
-```sh
-npx sv add
-```
-
-For example, to add Tailwind CSS:
-
-```sh
-npx sv add tailwindcss
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+npm install
+cp .dev.vars.example .dev.vars   # imposta ADMIN_PASSWORD
+npm run db:migrate               # database D1 locale
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Deploy: vedi [CLAUDE.md](CLAUDE.md) (decisioni tecniche e note operative) e [ROADMAP.md](ROADMAP.md).
 
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Licenza
+Software libero, rilasciato con licenza [Apache 2.0](LICENSE). Puoi usarlo, studiarlo, modificarlo e condividerlo. Le licenze dei componenti di terze parti sono in [NOTICE](NOTICE).
