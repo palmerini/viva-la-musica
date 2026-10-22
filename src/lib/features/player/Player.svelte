@@ -99,7 +99,7 @@
 />
 
 {#if song.hasScore && showScore}
-	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} voices={selected} />
+	<ScoreView url={scoreUrl(song.id)} ppq={score.ppq} {ticks} voices={selected} partVoices={score.parts.map((p) => p.voice)} />
 {/if}
 
 <h2>Le mie voci</h2>

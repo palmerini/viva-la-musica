@@ -3,8 +3,17 @@
 	import type { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 	import { VOICES, voiceFromName, type Voice } from './voices';
 
-	/** `voices`: voci scelte nel player (vuoto = tutte). */
-	let { url, ppq, ticks, voices }: { url: string; ppq: number; ticks: number; voices: Voice[] } = $props();
+	/**
+	 * `voices`: voci scelte nel player (vuoto = tutte).
+	 * `partVoices`: voce assegnata a ciascuna traccia del MIDI con note (quella decisa dall'admin), nell'ordine dei righi.
+	 */
+	let {
+		url,
+		ppq,
+		ticks,
+		voices,
+		partVoices
+	}: { url: string; ppq: number; ticks: number; voices: Voice[]; partVoices: (Voice | undefined)[] } = $props();
 
 	let box: HTMLDivElement;
 	let osmd: OpenSheetMusicDisplay | undefined;
@@ -57,8 +66,12 @@
 		const only = mineOnly && voices.length ? [...voices] : null;
 		osmd.setOptions({ renderSingleHorizontalStaffline: horizontal, drawPartNames: !only });
 		osmd.zoom = zoom;
-		osmd.Sheet.Instruments.forEach((inst, i) => {
-			const v = voiceFromName(inst.Name) ?? VOICES[i];
+		// MuseScore esporta MIDI e MusicXML con i righi nello stesso ordine: se il numero coincide si usa
+		// l'assegnazione dell'admin; altrimenti si ripiega sul nome del rigo o sulla posizione.
+		const instruments = osmd.Sheet.Instruments;
+		const byIndex = partVoices.length === instruments.length;
+		instruments.forEach((inst, i) => {
+			const v = byIndex ? partVoices[i] : (voiceFromName(inst.Name) ?? VOICES[i]);
 			inst.Visible = !only || (!!v && only.includes(v));
 		});
 		osmd.render();
