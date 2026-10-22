@@ -63,6 +63,8 @@
 		});
 		osmd.render();
 		osmd.cursor.show();
+		// Dopo render() il cursore resta dov'era: senza reset l'elenco dei passi partirebbe da metà brano.
+		osmd.cursor.reset();
 		stamps = [];
 		const it = osmd.cursor.Iterator;
 		while (!it.EndReached) {
