@@ -9,6 +9,8 @@ export interface Song {
 	voices: (Voice | null)[] | null;
 	/** C'è uno spartito (MusicXML) da mostrare. */
 	hasScore: boolean;
+	/** Link a risorse esterne: 'pdf' = spartito originale, 'all' = versione completa cantata, poi una per voce. */
+	links: Partial<Record<'pdf' | 'all' | Voice, string>>;
 }
 
 export const midiUrl = (id: string) => `/api/songs/${id}/midi`;

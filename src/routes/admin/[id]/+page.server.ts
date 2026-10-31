@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import { getSong, hasScore, replaceMidi, setScore, updateSong } from '#lib/server/db';
+import { getLinks, getSong, hasScore, replaceMidi, setLinks, setScore, updateSong } from '#lib/server/db';
 import { readSongForm } from '#lib/server/songForm';
 
 export const load = async ({ params, parent }) => {
@@ -8,7 +8,7 @@ export const load = async ({ params, parent }) => {
 	const s = await getSong(params.id);
 	if (!s) error(404, 'Brano non trovato');
 	return {
-		song: { id: s.id, title: s.title, composer: s.composer, notes: s.notes, voices: s.voices, hasScore: await hasScore(s.id) }
+		song: { id: s.id, title: s.title, composer: s.composer, notes: s.notes, voices: s.voices, hasScore: await hasScore(s.id), links: await getLinks(s.id) }
 	};
 };
 
@@ -22,6 +22,7 @@ export const actions = {
 		await updateSong(params.id, r.input!);
 		if (r.score) await setScore(params.id, r.score);
 		else if (r.removeScore) await setScore(params.id, null);
+		await setLinks(params.id, r.links!);
 		redirect(303, '/admin');
 	}
 };

@@ -6,6 +6,7 @@ App per i coristi del coro **Viva La Musica** (Milano), un coro SATB amatoriale:
 
 ## Funzioni
 - Repertorio caricato da un admin (MIDI e, facoltativo, spartito MusicXML da MuseScore).
+- Link esterni per ogni brano: lo spartito originale in PDF e le versioni cantate (YouTube, file su drive), una completa e una per ciascuna voce. L'app non ospita questi file.
 - Ascolto del brano intero o delle voci scelte (anche più di una), con volume per voce e velocità regolabile.
 - Spartito con cursore sincronizzato alla riproduzione.
 - Sezione Documentazione ("Gli spiritelli della musica") dentro l'app.

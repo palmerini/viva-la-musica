@@ -2,13 +2,21 @@
 	import { enhance } from '$app/forms';
 	import type { Score } from '#lib/features/player/midi';
 	import { midiUrl, type Song } from '#lib/features/repertoire/songs';
-	import { VOICES, VOICE_NAMES, type Voice } from '#lib/features/player/voices';
+	import { ALL_VOICES, VOICE_NAMES, normalizeThreeVoices, type Voice } from '#lib/features/player/voices';
 
 	let { song, error, submit }: { song?: Song; error?: string; submit: string } = $props();
 
 	interface Row { name: string; notes: number; voice: Voice | '' }
 	let rows = $state<Row[]>([]);
 	let parseError = $state('');
+	// Link esterni già salvati; poi si modificano dai campi del modulo.
+	// svelte-ignore state_referenced_locally
+	let links = $state<Record<string, string>>({ ...(song?.links ?? {}) });
+	/** Voci presenti nel brano (con tre voci quella maschile è "Uomini"): per ciascuna c'è un campo link. */
+	const linkVoices = $derived.by(() => {
+		const present = normalizeThreeVoices(rows.map((r) => r.voice || undefined));
+		return ALL_VOICES.filter((v) => present.includes(v));
+	});
 
 	function show(score: Score) {
 		rows = score.parts.map((p) => ({ name: p.name, notes: p.notes.length, voice: p.voice ?? '' }));
@@ -58,6 +66,15 @@
 		<label class="check"><input type="checkbox" name="removeScore" /> Rimuovi lo spartito attuale</label>
 	{/if}
 
+	<label>
+		Spartito originale (link al PDF, facoltativo)
+		<input type="url" name="link_pdf" bind:value={links.pdf} placeholder="https://…" maxlength="500" />
+		<small class="hint">
+			Il file resta sul servizio esterno (Drive, sito dell'editore…): l'app memorizza solo il link, e chi lo apre
+			accede secondo i permessi di quel servizio.
+		</small>
+	</label>
+
 	{#if parseError}<p class="err">{parseError}</p>{/if}
 	{#if rows.length}
 		<fieldset>
@@ -68,12 +85,31 @@
 					<span>{r.name}<small>{r.notes} note</small></span>
 					<select name="voice" bind:value={r.voice}>
 						<option value="">—</option>
-						{#each VOICES as v}<option value={v}>{VOICE_NAMES[v]}</option>{/each}
+						{#each ALL_VOICES as v}<option value={v}>{VOICE_NAMES[v]}</option>{/each}
 					</select>
 				</label>
 			{/each}
 		</fieldset>
 	{/if}
+
+	<fieldset>
+		<legend>Versioni cantate (link esterni, facoltativi)</legend>
+		<p class="hint">
+			Link a un video YouTube o a un file audio su un drive esterno: uno per la versione completa e uno per ciascuna voce.
+		</p>
+		<label>
+			Versione completa
+			<input type="url" name="link_all" bind:value={links.all} placeholder="https://…" maxlength="500" />
+		</label>
+		{#each linkVoices as v (v)}
+			<label>
+				{VOICE_NAMES[v]}
+				<input type="url" name={`link_${v}`} bind:value={links[v]} placeholder="https://…" maxlength="500" />
+			</label>
+		{:else}
+			<p class="hint">I campi delle singole voci compaiono dopo aver scelto il file MIDI e assegnato le voci.</p>
+		{/each}
+	</fieldset>
 
 	{#if error}<p class="err">{error}</p>{/if}
 	<button class="on">{submit}</button>

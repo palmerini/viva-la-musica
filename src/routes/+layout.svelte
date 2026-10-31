@@ -34,6 +34,7 @@
 		Il codice è su
 		<a href="https://github.com/palmerini/viva-la-musica" target="_blank" rel="noopener">GitHub</a>.
 	</p>
+	<p>Applicazione creata usando l'Intelligenza Artificiale.</p>
 </footer>
 </div>
 

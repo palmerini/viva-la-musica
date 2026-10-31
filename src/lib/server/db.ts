@@ -80,8 +80,29 @@ export async function updateSong(id: string, s: SongInput) {
 		.run();
 }
 
+/** I link a risorse esterne del brano: 'pdf' = spartito originale, 'all' = versione completa, poi una per voce. */
+export type SongLinks = Partial<Record<'pdf' | 'all' | Voice, string>>;
+
+export async function getLinks(id: string): Promise<SongLinks> {
+	const { results } = await env.DB.prepare('SELECT kind, url FROM song_link WHERE song_id = ?')
+		.bind(id)
+		.all<{ kind: string; url: string }>();
+	return Object.fromEntries(results.map((r) => [r.kind, r.url]));
+}
+
+/** Sostituisce tutti i link del brano con quelli indicati. */
+export async function setLinks(id: string, links: SongLinks) {
+	await env.DB.batch([
+		env.DB.prepare('DELETE FROM song_link WHERE song_id = ?').bind(id),
+		...Object.entries(links).map(([kind, url]) =>
+			env.DB.prepare('INSERT INTO song_link (song_id, kind, url) VALUES (?, ?, ?)').bind(id, kind, url)
+		)
+	]);
+}
+
 export async function deleteSong(id: string) {
 	await env.DB.batch([
+		env.DB.prepare('DELETE FROM song_link WHERE song_id = ?').bind(id),
 		env.DB.prepare('DELETE FROM song_score WHERE song_id = ?').bind(id),
 		env.DB.prepare('DELETE FROM song_midi WHERE song_id = ?').bind(id),
 		env.DB.prepare('DELETE FROM song WHERE id = ?').bind(id)

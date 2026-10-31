@@ -15,6 +15,8 @@
 - [x] Voci campionate (coro)
 - [x] Documentazione dentro l'app
 - [x] Licenza Apache 2.0 e footer
+- [x] Brani a tre voci (soprani, contralti, uomini)
+- [x] Link esterni: spartito originale (PDF) e versioni cantate
 
 ## Idee per dopo (da pescare in base all'uso)
 - Segui la nota: visualizzazione della linea della propria voce

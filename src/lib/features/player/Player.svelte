@@ -2,7 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ScorePlayer } from './engine';
 	import ScoreView from './ScoreView.svelte';
-	import { VOICES, VOICE_NAMES, type Voice } from './voices';
+	import { ALL_VOICES, VOICE_NAMES, type Voice } from './voices';
 	import { scoreUrl, type Song } from '../repertoire/songs';
 	import type { Score } from './midi';
 
@@ -35,7 +35,21 @@
 	let voicesReady = $state(false);
 	player.ready.then(() => (voicesReady = true));
 
-	const available = VOICES.filter((v) => score.parts.some((p) => p.voice === v));
+	/** Link esterni del brano nell'ordine: spartito originale, versione completa, poi una per voce. Solo http(s). */
+	// svelte-ignore state_referenced_locally
+	const resources = [
+		...(song.links.pdf ? [{ icon: '📄', label: 'Spartito originale (PDF)', url: song.links.pdf }] : []),
+		...(song.links.all ? [{ icon: '🎧', label: 'Versione completa cantata', url: song.links.all }] : []),
+		...ALL_VOICES.filter((v) => song.links[v]).map((v) => ({
+			icon: '🎧',
+			label: `${VOICE_NAMES[v]}: versione cantata`,
+			url: song.links[v] as string
+		}))
+	]
+		.filter((r) => /^https?:\/\//i.test(r.url))
+		.map((r) => ({ ...r, host: new URL(r.url).hostname.replace(/^www\./, '') }));
+
+	const available = ALL_VOICES.filter((v) => score.parts.some((p) => p.voice === v));
 
 	function tick() {
 		progress = player.progress;
@@ -131,6 +145,20 @@
 	<input type="range" min="0.4" max="1.2" step="0.05" bind:value={rate} oninput={() => player.setRate(rate)} />
 </label>
 
+{#if resources.length}
+	<h2>Spartito e risorse</h2>
+	<ul class="resources">
+		{#each resources as r}
+			<li>
+				<a href={r.url} target="_blank" rel="noopener noreferrer">
+					<span>{r.icon} {r.label}</span>
+					<small>{r.host} ↗</small>
+				</a>
+			</li>
+		{/each}
+	</ul>
+{/if}
+
 <style>
 	.back { color: var(--muted); text-decoration: none; }
 	h1 { margin: 0.6rem 0 0.2rem; font-size: 1.4rem; }
@@ -142,6 +170,9 @@
 	.row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 	input[type='range'] { width: 100%; accent-color: var(--brand); }
 	.mix { display: grid; grid-template-columns: 6.5rem 1fr; align-items: center; gap: 0.6rem; margin: 0.3rem 0; }
+	.resources { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+	.resources a { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 0.8rem; text-decoration: none; }
+	.resources small { color: var(--muted); white-space: nowrap; }
 	.link.active { color: var(--fg); }
 	.link { border: none; background: none; color: var(--muted); text-decoration: underline; padding: 0.5rem 0; }
 </style>

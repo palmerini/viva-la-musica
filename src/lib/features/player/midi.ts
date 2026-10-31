@@ -1,5 +1,5 @@
 import { Midi } from '@tonejs/midi';
-import { assignVoices, type Voice } from './voices';
+import { assignVoices, normalizeThreeVoices, type Voice } from './voices';
 
 export interface Part {
 	name: string;
@@ -36,9 +36,11 @@ export function parseScore(data: ArrayBuffer, override?: (Voice | null)[] | null
 		.filter((t) => t.notes.length > 0);
 	const meanPitch = (t: (typeof tracks)[number]) =>
 		t.notes.reduce((s, n) => s + n.midi, 0) / t.notes.length;
-	const voices = override
-		? tracks.map((_, i) => override[i] ?? undefined)
-		: assignVoices(tracks.map((t) => ({ name: t.name, meanPitch: meanPitch(t) })));
+	const voices = normalizeThreeVoices(
+		override
+			? tracks.map((_, i) => override[i] ?? undefined)
+			: assignVoices(tracks.map((t) => ({ name: t.name, meanPitch: meanPitch(t) })))
+	);
 	const parts: Part[] = tracks.map((t, i) => ({
 		name: t.name || `Traccia ${i + 1}`,
 		voice: voices[i],
